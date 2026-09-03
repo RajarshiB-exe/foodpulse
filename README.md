@@ -71,10 +71,4 @@ Server-side analytics use Pandas, NumPy and scikit-learn. The application separa
 - `POST /api/simulator`
 - `GET /api/integrations/swiggy/status`
 
-## Swiggy integration
 
-FoodPulse includes an isolated integration boundary for authorized Swiggy Builders Club access. Configure only credentials you are authorized to use; never commit access tokens to Git.
-
-## Resume line
-
-Built a full-stack food-delivery economics intelligence platform using React, FastAPI and PostgreSQL, with server-side analytics, restaurant benchmarking, anomaly detection, demand forecasting, review intelligence and an interactive contribution-margin simulator.
