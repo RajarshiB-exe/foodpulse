@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-foodpulse}
+      POSTGRES_USER: ${POSTGRES_USER:-foodpulse}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-foodpulse}
+    volumes:
+      - foodpulse_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-foodpulse} -d ${POSTGRES_DB:-foodpulse}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://foodpulse:foodpulse@db:5432/foodpulse}
+      SWIGGY_ACCESS_TOKEN: ${SWIGGY_ACCESS_TOKEN:-}
+      SWIGGY_MCP_URL: ${SWIGGY_MCP_URL:-https://mcp.swiggy.com/food}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+volumes:
+  foodpulse_db:
